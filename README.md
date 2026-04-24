@@ -29,13 +29,14 @@ Built for **Paper 1.21+** on **Java 21**.
 
 ## 🎮 Commands
 
-- Command: Description: Permission
 - /sethome <name>
 - Set a home at your current location
 - telehome.sethome
+
 - /home <name>	
 - Teleport to one of your homes
 - telehome.home
+
 - Home name rules: letters, numbers, underscores, and dashes. Max 32 characters.
 
 ---
