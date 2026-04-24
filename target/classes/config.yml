@@ -1,0 +1,20 @@
+# TeleHome Configuration
+
+# Delay in seconds before the player is teleported after using /home.
+# Set to 0 for instant teleport.
+teleport-delay-seconds: 3
+
+# If true, the teleport will be cancelled if the player moves during the delay.
+cancel-on-move: true
+
+# Messages (supports legacy & color codes)
+messages:
+  home-set: "&aHome '&e%name%&a' has been set!"
+  home-not-found: "&cNo home found with the name '&e%name%&c'."
+  teleporting: "&aTeleporting to '&e%name%&a' in &e%seconds% &aseconds. Don't move!"
+  teleported: "&aTeleported to '&e%name%&a'!"
+  teleport-cancelled: "&cTeleport cancelled because you moved!"
+  world-missing: "&cThe world for that home no longer exists."
+  usage-sethome: "&cUsage: /sethome <name>"
+  usage-home: "&cUsage: /home <name>"
+  players-only: "&cOnly players can use this command."

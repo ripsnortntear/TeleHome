@@ -1,0 +1,6 @@
+com\blackboxai\telehome\commands\SetHomeCommand.class
+com\blackboxai\telehome\HomeManager.class
+com\blackboxai\telehome\models\Home.class
+com\blackboxai\telehome\TeleHome.class
+com\blackboxai\telehome\commands\HomeCommand.class
+com\blackboxai\telehome\commands\HomeCommand$1.class

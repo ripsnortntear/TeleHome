@@ -1,0 +1,24 @@
+name: TeleHome
+version: 1.0.0
+main: com.blackboxai.telehome.TeleHome
+api-version: '1.21'
+author: BlackBoxAI
+description: Set and teleport to personal homes.
+
+commands:
+  sethome:
+    description: Set a home at your current location.
+    usage: /sethome <name>
+    permission: telehome.sethome
+  home:
+    description: Teleport to one of your homes.
+    usage: /home <name>
+    permission: telehome.home
+
+permissions:
+  telehome.sethome:
+    description: Allows setting homes.
+    default: true
+  telehome.home:
+    description: Allows teleporting to homes.
+    default: true
