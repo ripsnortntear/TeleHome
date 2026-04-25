@@ -8,6 +8,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -73,7 +75,6 @@ public class HomeManager {
     }
 
     public void saveHomes() {
-        // Wipe root keys, then rewrite.
         for (String key : new HashSet<>(homesConfig.getKeys(false))) {
             homesConfig.set(key, null);
         }
@@ -109,5 +110,35 @@ public class HomeManager {
         Map<String, Home> playerHomes = homes.get(uuid);
         if (playerHomes == null) return null;
         return playerHomes.get(name.toLowerCase());
+    }
+
+    /**
+     * Deletes a home.
+     * @return true if the home existed and was deleted, false otherwise.
+     */
+    public boolean deleteHome(UUID uuid, String name) {
+        Map<String, Home> playerHomes = homes.get(uuid);
+        if (playerHomes == null) return false;
+
+        Home removed = playerHomes.remove(name.toLowerCase());
+        if (removed == null) return false;
+
+        // Clean up empty maps
+        if (playerHomes.isEmpty()) {
+            homes.remove(uuid);
+        }
+
+        saveHomes();
+        return true;
+    }
+
+    /**
+     * Returns an unmodifiable collection of all homes for a player.
+     * Never returns null.
+     */
+    public Collection<Home> getHomes(UUID uuid) {
+        Map<String, Home> playerHomes = homes.get(uuid);
+        if (playerHomes == null) return Collections.emptyList();
+        return Collections.unmodifiableCollection(playerHomes.values());
     }
 }

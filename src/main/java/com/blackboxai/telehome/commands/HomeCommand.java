@@ -7,19 +7,21 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class HomeCommand implements CommandExecutor {
+public class HomeCommand implements CommandExecutor, TabCompleter {
 
     private final TeleHome plugin;
-
-    // Track pending teleports so we can cancel if the player runs /home again
     private final Map<UUID, BukkitRunnable> pendingTeleports = new HashMap<>();
 
     public HomeCommand(TeleHome plugin) {
@@ -62,7 +64,6 @@ public class HomeCommand implements CommandExecutor {
         int delay = plugin.getConfig().getInt("teleport-delay-seconds", 3);
         boolean cancelOnMove = plugin.getConfig().getBoolean("cancel-on-move", true);
 
-        // Instant teleport
         if (delay <= 0) {
             player.teleport(destination);
             String msg = plugin.getConfig().getString("messages.teleported",
@@ -71,7 +72,6 @@ public class HomeCommand implements CommandExecutor {
             return true;
         }
 
-        // Cancel any existing pending teleport for this player
         BukkitRunnable existing = pendingTeleports.remove(player.getUniqueId());
         if (existing != null && !existing.isCancelled()) {
             existing.cancel();
@@ -90,14 +90,12 @@ public class HomeCommand implements CommandExecutor {
 
             @Override
             public void run() {
-                // Player went offline
                 if (!player.isOnline()) {
                     pendingTeleports.remove(player.getUniqueId());
                     cancel();
                     return;
                 }
 
-                // Movement check (ignores head rotation; checks block movement)
                 if (cancelOnMove && hasMoved(startLoc, player.getLocation())) {
                     player.sendMessage(color(plugin.getConfig().getString("messages.teleport-cancelled",
                             "&cTeleport cancelled because you moved!")));
@@ -119,12 +117,30 @@ public class HomeCommand implements CommandExecutor {
         };
 
         pendingTeleports.put(player.getUniqueId(), task);
-        task.runTaskTimer(plugin, 20L, 20L); // every 1s
+        task.runTaskTimer(plugin, 20L, 20L);
 
         return true;
     }
 
-        private boolean hasMoved(Location a, Location b) {
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command,
+                                      @NotNull String alias, @NotNull String[] args) {
+        if (!(sender instanceof Player player) || args.length != 1) {
+            return Collections.emptyList();
+        }
+
+        String partial = args[0].toLowerCase();
+        List<String> matches = new ArrayList<>();
+        plugin.getHomeManager().getHomes(player.getUniqueId()).forEach(home -> {
+            if (home.getName().toLowerCase().startsWith(partial)) {
+                matches.add(home.getName());
+            }
+        });
+        Collections.sort(matches);
+        return matches;
+    }
+
+    private boolean hasMoved(Location a, Location b) {
         if (a.getWorld() == null || b.getWorld() == null) return true;
         if (!a.getWorld().equals(b.getWorld())) return true;
         return a.getBlockX() != b.getBlockX()

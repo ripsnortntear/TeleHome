@@ -1,7 +1,10 @@
 package com.blackboxai.telehome;
 
+import com.blackboxai.telehome.commands.DelHomeCommand;
 import com.blackboxai.telehome.commands.HomeCommand;
+import com.blackboxai.telehome.commands.ListHomeCommand;
 import com.blackboxai.telehome.commands.SetHomeCommand;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class TeleHome extends JavaPlugin {
@@ -15,8 +18,23 @@ public class TeleHome extends JavaPlugin {
         this.homeManager = new HomeManager(this);
         this.homeManager.loadHomes();
 
+        // /sethome
         getCommand("sethome").setExecutor(new SetHomeCommand(this));
-        getCommand("home").setExecutor(new HomeCommand(this));
+
+        // /home (with tab-complete)
+        HomeCommand homeCmd = new HomeCommand(this);
+        PluginCommand home = getCommand("home");
+        home.setExecutor(homeCmd);
+        home.setTabCompleter(homeCmd);
+
+        // /delhome (with tab-complete)
+        DelHomeCommand delHomeCmd = new DelHomeCommand(this);
+        PluginCommand delhome = getCommand("delhome");
+        delhome.setExecutor(delHomeCmd);
+        delhome.setTabCompleter(delHomeCmd);
+
+        // /listhome
+        getCommand("listhome").setExecutor(new ListHomeCommand(this));
 
         getLogger().info("TeleHome enabled.");
     }

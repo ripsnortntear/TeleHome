@@ -9,12 +9,27 @@ cancel-on-move: true
 
 # Messages (supports legacy & color codes)
 messages:
+  # /sethome
   home-set: "&aHome '&e%name%&a' has been set!"
-  home-not-found: "&cNo home found with the name '&e%name%&c'."
+  usage-sethome: "&cUsage: /sethome <name>"
+
+  # /home
   teleporting: "&aTeleporting to '&e%name%&a' in &e%seconds% &aseconds. Don't move!"
   teleported: "&aTeleported to '&e%name%&a'!"
   teleport-cancelled: "&cTeleport cancelled because you moved!"
-  world-missing: "&cThe world for that home no longer exists."
-  usage-sethome: "&cUsage: /sethome <name>"
   usage-home: "&cUsage: /home <name>"
+
+  # /delhome
+  home-deleted: "&aHome '&e%name%&a' has been deleted."
+  usage-delhome: "&cUsage: /delhome <name>"
+
+  # /listhome
+  no-homes: "&eYou have no homes set. Use &f/sethome <name>&e to set one."
+  list-header: "&6--- Your Homes (&e%count%&6) ---"
+  list-entry: "&7- &e%name% &7(&f%world%&7 @ &f%x%&7, &f%y%&7, &f%z%&7)"
+  list-footer: "&7Use &f/home <name>&7 to teleport."
+
+  # Shared
+  home-not-found: "&cNo home found with the name '&e%name%&c'."
+  world-missing: "&cThe world for that home no longer exists."
   players-only: "&cOnly players can use this command."
