@@ -1,9 +1,9 @@
 name: TeleHome
-version: 1.0.0
+version: 1.1.0
 main: com.blackboxai.telehome.TeleHome
 api-version: '1.21'
 author: BlackBoxAI
-description: Set and teleport to personal homes.
+description: Set, list, delete, and teleport to personal homes.
 
 commands:
   sethome:
@@ -14,6 +14,16 @@ commands:
     description: Teleport to one of your homes.
     usage: /home <name>
     permission: telehome.home
+  delhome:
+    description: Delete one of your homes.
+    usage: /delhome <name>
+    permission: telehome.delhome
+    aliases: [removehome, rmhome]
+  listhome:
+    description: List all of your homes.
+    usage: /listhome
+    permission: telehome.listhome
+    aliases: [homes, listhomes]
 
 permissions:
   telehome.sethome:
@@ -21,4 +31,10 @@ permissions:
     default: true
   telehome.home:
     description: Allows teleporting to homes.
+    default: true
+  telehome.delhome:
+    description: Allows deleting homes.
+    default: true
+  telehome.listhome:
+    description: Allows listing homes.
     default: true

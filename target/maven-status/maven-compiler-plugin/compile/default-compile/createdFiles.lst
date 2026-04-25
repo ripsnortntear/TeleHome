@@ -1,3 +1,5 @@
+com\blackboxai\telehome\commands\ListHomeCommand.class
+com\blackboxai\telehome\commands\DelHomeCommand.class
 com\blackboxai\telehome\commands\SetHomeCommand.class
 com\blackboxai\telehome\HomeManager.class
 com\blackboxai\telehome\models\Home.class
