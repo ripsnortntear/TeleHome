@@ -103,6 +103,24 @@ messages:
 
 ---
 
+## 🗺️ Roadmap
+
+- [x] `/delhome <name>` — Delete a saved home with aliases
+- [x] `/listhome` — Clickable chat list of homes with coordinates
+- [x] Tab completion for all commands and home names
+- [x] Per-rank home limits (`telehome.max.<amount>` and `telehome.bypass.limit`)
+- [x] Death location recall (`/death`)
+- [x] Return to prior teleport location (`/back`)
+- [x] Warmup delay & move/damage cancellation (`telehome.bypass.delay`)
+- [x] Hot-reload command (`/telehome reload`)
+- [ ] Post-teleport cooldown timer (separate from warmup delay)
+- [ ] Cross-world teleport toggle (prevent inter-dimensional teleports if disabled)
+- [ ] Economy support (Vault integration for charging in-game currency)
+- [ ] Bed / respawn anchor home integration (`/home bed`)
+- [ ] Interactive GUI home selector menu
+
+---
+
 ## 🛠️ Building from Source
 
 Requires **Java 25** and **Maven 3.9+**:
