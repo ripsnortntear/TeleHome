@@ -1,9 +1,9 @@
 name: TeleHome
-version: 1.1.0
-main: com.blackboxai.telehome.TeleHome
+version: '${project.version}'
+main: me.ripsnortntear.telehome.TeleHome
 api-version: '1.21'
-author: BlackBoxAI
-description: Set, list, delete, and teleport to personal homes.
+author: ripsnortntear
+description: Clean, high-performance home, death location, and back teleportation for Minecraft 26.3.
 
 commands:
   sethome:
@@ -12,7 +12,7 @@ commands:
     permission: telehome.sethome
   home:
     description: Teleport to one of your homes.
-    usage: /home <name>
+    usage: /home [name]
     permission: telehome.home
   delhome:
     description: Delete one of your homes.
@@ -24,6 +24,21 @@ commands:
     usage: /listhome
     permission: telehome.listhome
     aliases: [homes, listhomes]
+  death:
+    description: Teleport to your last death location.
+    usage: /death
+    permission: telehome.death
+    aliases: [lastdeath]
+  back:
+    description: Teleport back to your previous location prior to teleporting.
+    usage: /back
+    permission: telehome.back
+    aliases: [return]
+  telehome:
+    description: Administrative and info commands for TeleHome.
+    usage: /telehome [reload|version|help]
+    permission: telehome.admin
+    aliases: [th]
 
 permissions:
   telehome.sethome:
@@ -38,3 +53,18 @@ permissions:
   telehome.listhome:
     description: Allows listing homes.
     default: true
+  telehome.death:
+    description: Allows teleporting to last death location.
+    default: true
+  telehome.back:
+    description: Allows teleporting back to previous location.
+    default: true
+  telehome.bypass.delay:
+    description: Bypass teleport warmup delay.
+    default: op
+  telehome.bypass.limit:
+    description: Bypass maximum homes limit.
+    default: op
+  telehome.admin:
+    description: Gives access to TeleHome administrative commands and reload.
+    default: op

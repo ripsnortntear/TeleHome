@@ -1,170 +1,122 @@
 # TeleHome
 
-A lightweight **Paper/Spigot plugin** for Minecraft that lets players save their favorite locations and teleport back to them instantly — or with a configurable countdown delay.
+[![Minecraft](https://img.shields.io/badge/Minecraft-26.3-brightgreen.svg)](https://papermc.io)
+[![Java](https://img.shields.io/badge/Java-25-orange.svg)](https://adoptium.net)
+[![License](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE)
+[![Release](https://img.shields.io/badge/Release-v1.3.0-blue.svg)](https://github.com/ripsnortntear/TeleHome/releases)
 
-Built for **Paper 1.21+ and 26.2.1** on **Java 21**.
+A modern, high-performance **Paper/Spigot** home and teleportation plugin for Minecraft 26.3.  
+Save custom homes, view clickable home lists, return to your previous location, and teleport to your last death point — all with customizable warmup delays, move/damage cancellation, and permissions.
 
 ---
 
 ## ✨ Features
 
-- 🏠 **Set unlimited named homes** — `/sethome castle`, `/sethome mine`, `/sethome farm`...
-- ⚡ **Teleport back anytime** — `/home castle` returns you with exact position, facing direction, and pitch.
-- 💾 **Persistent storage** — homes are saved per-player (by UUID) and survive restarts, name changes, and world reloads.
-- ⏱ **Configurable teleport delay** — instant or countdown teleport (e.g. 3 seconds).
-- 🚶 **Move-to-cancel** — optionally cancel teleport if the player moves during the countdown.
-- 🌍 **Multi-world support** — homes remember which world they belong to.
-- 🎨 **Fully customizable messages** via `config.yml`.
+- 🏠 **Named Homes** — `/sethome <name>`, `/home [name]`, and `/delhome <name>` with case-insensitive lookup while preserving your exact naming case.
+- 📜 **Clickable Home List** — `/listhome` displays your homes with coordinates and lets you click any home in chat to teleport instantly!
+- 💀 **Death Teleportation** — `/death` teleports you back to where you died to quickly retrieve your items.
+- 🔄 **Back Teleportation** — `/back` returns you to your previous location prior to teleporting.
+- ⏱️ **Warmup Countdown & Cancellation** — Configurable warmup delay with automatic cancellation if a player moves or takes damage.
+- 🛡️ **Home Limits & Tiered Permissions** — Configurable default home cap (e.g. 10), permission-based caps (`telehome.max.<n>`), and bypass permissions (`telehome.bypass.limit`).
+- ⚡ **Delay Bypass** — Players or VIP ranks with `telehome.bypass.delay` teleport immediately without waiting.
+- 💾 **Reliable YAML Storage** — Homes and death/back locations are stored separately (`homes.yml` & `deathback.yml`) by player UUID to survive name changes and server restarts.
+- 🔄 **Hot-Reloadable** — `/telehome reload` reloads all configuration and data files in real time without restarting the server.
+- 🎨 **Adventure & Legacy Color Support** — Clean color formatting with support for `&` color codes and hex colors.
 
 ---
 
 ## 📦 Installation
 
-    Download the latest `TeleHome.jar` from the [Releases](../../releases) page.
-    Drop it into your server's `plugins/` folder.
-    Start (or restart) your server.
-    Configuration is generated at `plugins/TeleHome/config.yml`.
+1. Download `TeleHome-1.3.0.jar` from the [Releases](https://github.com/ripsnortntear/TeleHome/releases) tab.
+2. Place the `.jar` into your server's `plugins/` directory.
+3. Ensure your server is running **Paper 26.3** with **Java 25**.
+4. Start or restart your server. Configuration files will be generated in `plugins/TeleHome/`.
 
 ---
 
-## 🎮 Commands
+## 🎮 Commands & Aliases
 
-    /sethome <name>
-    Set a home at your current location
-    telehome.sethome
-
-    /home <name>	
-    Teleport to one of your homes
-    telehome.home
-
-    Home name rules: letters, numbers, underscores, and dashes. Max 32 characters.
-
----
-
-🔐 Permissions
-
-    Permission - Default Setting - Description
-
-    telehome.sethome - true - Allows players to set homes
-    telehome.home - true - Allows players to teleport to homes
+| Command | Aliases | Description | Permission |
+| :--- | :--- | :--- | :--- |
+| `/sethome <name>` | — | Sets a home at your current coordinates | `telehome.sethome` |
+| `/home [name]` | — | Teleports to the specified home (or default) | `telehome.home` |
+| `/delhome <name>` | `/rmhome`, `/removehome` | Deletes the specified home | `telehome.delhome` |
+| `/listhome` | `/homes`, `/listhomes` | Lists all your homes with clickable chat teleport | `telehome.listhome` |
+| `/death` | `/lastdeath` | Teleports to your last death location | `telehome.death` |
+| `/back` | `/return` | Teleports to your location prior to last teleport | `telehome.back` |
+| `/telehome reload` | `/th reload` | Reloads `config.yml`, `homes.yml`, and `deathback.yml` | `telehome.admin` |
+| `/telehome version`| `/th version`| Displays version and compatibility info | `telehome.admin` |
+| `/telehome help`   | `/th help`   | Displays command reference | `telehome.admin` |
 
 ---
 
-⚙️ Configuration
+## 🔐 Permissions
 
-```Delay in seconds before the player is teleported after using /home.
-Set to 0 for instant teleport.
-    teleport-delay-seconds: 3
+| Permission | Description | Default |
+| :--- | :--- | :--- |
+| `telehome.sethome` | Allows creating/updating homes | `true` (Everyone) |
+| `telehome.home` | Allows teleporting to homes | `true` (Everyone) |
+| `telehome.delhome` | Allows deleting homes | `true` (Everyone) |
+| `telehome.listhome` | Allows listing your saved homes | `true` (Everyone) |
+| `telehome.death` | Allows teleporting to your last death point | `true` (Everyone) |
+| `telehome.back` | Allows returning to your prior teleport location | `true` (Everyone) |
+| `telehome.bypass.delay` | Bypasses warmup teleport delay | `op` |
+| `telehome.bypass.limit` | Allows setting unlimited homes | `op` |
+| `telehome.max.<amount>` | Grants custom max homes limit (e.g. `telehome.max.20`) | `none` |
+| `telehome.admin` | Access to `/telehome reload` and administrative commands | `op` |
 
-If true, the teleport will be cancelled if the player moves during the delay.
-    cancel-on-move: true
+---
 
-Messages (supports legacy & color codes)
-    messages:
-        home-set: "&aHome '&e%name%&a' has been set!"
-        home-not-found: "&cNo home found with the name '&e%name%&c'."
-        teleporting: "&aTeleporting to '&e%name%&a' in &e%seconds% &aseconds. Don't move!"
-        teleported: "&aTeleported to '&e%name%&a'!"
-        teleport-cancelled: "&cTeleport cancelled because you moved!"
-        world-missing: "&cThe world for that home no longer exists."
-        usage-sethome: "&cUsage: /sethome <name>"
-        usage-home: "&cUsage: /home <name>"
-        players-only: "&cOnly players can use this command."
+## ⚙️ Configuration (`config.yml`)
 
-/home
-    teleporting: "&aTeleporting to '&e%name%&a' in &e%seconds% &aseconds. Don't move!"
-    teleported: "&aTeleported to '&e%name%&a'!"
-    teleport-cancelled: "&cTeleport cancelled because you moved!"
-    usage-home: "&cUsage: /home <name>"
+```yaml
+# ==============================================================================
+#                     TeleHome Configuration (Minecraft 26.3)
+# ==============================================================================
 
-/delhome
-    home-deleted: "&aHome '&e%name%&a' has been deleted."
-    usage-delhome: "&cUsage: /delhome <name>"
+# Delay in seconds before a teleport completes. Set to 0 for instant teleport.
+teleport-delay-seconds: 3
 
-/listhome
-    no-homes: "&eYou have no homes set. Use &f/sethome <name>&e to set one."
-    list-header: "&6--- Your Homes (&e%count%&6) ---"
-    list-entry: "&7- &e%name% &7(&f%world%&7 @ &f%x%&7, &f%y%&7, &f%z%&7)"
-    list-footer: "&7Use &f/home <name>&7 to teleport."
+# Apply warmup delay to /death and /back commands as well.
+delay-death-and-back: true
 
-Shared
-    home-not-found: "&cNo home found with the name '&e%name%&c'."
-    world-missing: "&cThe world for that home no longer exists."
-    players-only: "&cOnly players can use this command."
+# If true, teleport will be cancelled if the player moves more than 0.5 blocks during warmup.
+cancel-on-move: true
+
+# If true, teleport will be cancelled if the player takes damage during warmup.
+cancel-on-damage: true
+
+# Maximum number of homes a player can set by default.
+# Players with 'telehome.bypass.limit' or 'telehome.admin' have unlimited homes.
+# Custom limits can also be given via permission: telehome.max.<amount> (e.g. telehome.max.20)
+max-homes: 10
+
+# Commands enabled
+features:
+  death-command: true
+  back-command: true
+
+# Messages (supports '&' color codes and Adventure format)
+messages:
+  # ... customizable messages
 ```
----
-
-💾 Data Storage
-
-Homes are stored in plugins/TeleHome/homes.yml, keyed by player UUID:
-
-    e5f1d2a7-...-...:
-      castle:
-        world: world
-        x: 123.5
-        y: 64.0
-        z: -452.3
-        yaw: 90.0
-        pitch: 0.0
-
-Because UUIDs are used instead of usernames, homes persist through Mojang name changes.
 
 ---
 
-🛠 Building from Source
+## 🛠️ Building from Source
 
-Requirements:
+Requires **Java 25** and **Maven 3.9+**:
 
-    Java 21+
-    Maven 3.9+
-
-```
-bash
+```bash
 git clone https://github.com/ripsnortntear/TeleHome.git
 cd TeleHome
 mvn clean package
 ```
-The compiled jar will be located at target/TeleHome.jar.
+
+The compiled shaded jar will be located in `target/TeleHome-1.3.0.jar`.
 
 ---
 
-🧪 Tested On
+## 📄 License
 
-    Paper 1.21.4
-    Java 21
-
----
-
-🗺 Roadmap
-
-Planned features for future releases:
-
-    [X] /delhome <name> — delete a home
-    [X] /listhomes — list your homes
-    [X] Tab completion for home names
-    [ ] Per-rank home limits (permission-based)
-    [ ] Teleport cooldowns
-    [ ] Cross-world teleport toggle
-    [ ] Optional cost system (economy integration)
-    [ ] Bed/respawn-home integration
-
-Got a suggestion? Open an issue!
-
----
-
-🐛 Issues & Contributions
-
-    Bugs / feature requests: open an issue
-    Pull requests: welcome! Please target the main branch and describe your changes clearly.
-
----
-
-📄 License
-
-This project is licensed under the MIT License — see the LICENSE file for details.
-
----
-
-❤️ Credits
-
-Built with Paper API.
+This project is licensed under the terms of the GNU General Public License v3.0 (GPLv3). See the [LICENSE](LICENSE) file for details.

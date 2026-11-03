@@ -1,22 +1,52 @@
-# TeleHome Configuration
+# ==============================================================================
+#                     TeleHome Configuration (Minecraft 26.3)
+# ==============================================================================
 
-# Delay in seconds before the player is teleported after using /home.
-# Set to 0 for instant teleport.
+# Delay in seconds before a teleport completes. Set to 0 for instant teleport.
 teleport-delay-seconds: 3
 
-# If true, the teleport will be cancelled if the player moves during the delay.
+# Apply warmup delay to /death and /back commands as well.
+delay-death-and-back: true
+
+# If true, teleport will be cancelled if the player moves more than 0.5 blocks during warmup.
 cancel-on-move: true
 
-# Messages (supports legacy & color codes)
+# If true, teleport will be cancelled if the player takes damage during warmup.
+cancel-on-damage: true
+
+# Maximum number of homes a player can set by default.
+# Players with 'telehome.bypass.limit' or 'telehome.admin' have unlimited homes.
+# Custom limits can also be given via permission: telehome.max.<amount> (e.g. telehome.max.20)
+max-homes: 10
+
+# Commands enabled
+features:
+  death-command: true
+  back-command: true
+
+# Messages (supports '&' color codes and Adventure format)
 messages:
+  # General & Errors
+  prefix: "&6[TeleHome]&r "
+  players-only: "&cOnly players can use this command."
+  no-permission: "&cYou do not have permission to use this command."
+  world-missing: "&cThe destination world is not currently loaded or does not exist."
+  plugin-reloaded: "&aTeleHome configuration and data have been reloaded successfully."
+
   # /sethome
-  home-set: "&aHome '&e%name%&a' has been set!"
+  home-set: "&aHome '&e%name%&a' has been set at your current location!"
+  home-updated: "&aHome '&e%name%&a' location has been updated!"
+  home-limit-reached: "&cYou have reached your limit of &e%limit%&c home(s). Delete one with &f/delhome <name>&c first."
+  invalid-home-name: "&cInvalid home name. Names must be alphanumeric (1-20 characters)."
   usage-sethome: "&cUsage: /sethome <name>"
 
   # /home
-  teleporting: "&aTeleporting to '&e%name%&a' in &e%seconds% &aseconds. Don't move!"
+  teleporting: "&aTeleporting to '&e%name%&a' in &e%seconds%&a seconds. Don't move!"
   teleported: "&aTeleported to '&e%name%&a'!"
-  teleport-cancelled: "&cTeleport cancelled because you moved!"
+  teleport-cancelled-move: "&cTeleport cancelled because you moved!"
+  teleport-cancelled-damage: "&cTeleport cancelled because you took damage!"
+  already-teleporting: "&cYou already have a teleport in progress!"
+  home-not-found: "&cNo home found named '&e%name%&c'."
   usage-home: "&cUsage: /home <name>"
 
   # /delhome
@@ -24,12 +54,17 @@ messages:
   usage-delhome: "&cUsage: /delhome <name>"
 
   # /listhome
-  no-homes: "&eYou have no homes set. Use &f/sethome <name>&e to set one."
-  list-header: "&6--- Your Homes (&e%count%&6) ---"
-  list-entry: "&7- &e%name% &7(&f%world%&7 @ &f%x%&7, &f%y%&7, &f%z%&7)"
-  list-footer: "&7Use &f/home <name>&7 to teleport."
+  no-homes: "&eYou have no homes set. Use &f/sethome <name>&e to create one."
+  list-header: "&6--- Your Homes (&e%count%&6/%limit%) ---"
+  list-entry: "&7- &e%name% &7(&f%world%&7: &f%x%&7, &f%y%&7, &f%z%&7)"
+  list-footer: "&7Click or type &f/home <name>&7 to teleport."
 
-  # Shared
-  home-not-found: "&cNo home found with the name '&e%name%&c'."
-  world-missing: "&cThe world for that home no longer exists."
-  players-only: "&cOnly players can use this command."
+  # /death
+  no-death-location: "&cYou do not have a recorded death location."
+  death-teleporting: "&aTeleporting to your last death location in &e%seconds%&a seconds..."
+  death-teleported: "&aTeleported to your last death location."
+
+  # /back
+  no-last-location: "&cYou do not have a recorded previous location."
+  back-teleporting: "&aTeleporting to your previous location in &e%seconds%&a seconds..."
+  back-teleported: "&aTeleported back to your previous location."
